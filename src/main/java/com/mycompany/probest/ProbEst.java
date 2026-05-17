@@ -12,6 +12,8 @@ public class ProbEst {
 
     public static void main(String[] args) {
         System.out.println("OverOver");
+        editor  ed = new editor();
+        ed.setVisible(true);
     }
 }
 
