@@ -30,6 +30,7 @@ public class editor extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         JTextCodigo = new javax.swing.JTextArea();
         AnalizarBtn = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
@@ -41,6 +42,8 @@ public class editor extends javax.swing.JFrame {
         jScrollPane1.setViewportView(JTextCodigo);
 
         AnalizarBtn.setText("Analizar");
+
+        jButton1.setText("jButton1");
 
         jMenu1.setText("File");
         jMenuBar1.add(jMenu1);
@@ -56,8 +59,10 @@ public class editor extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(35, 35, 35)
-                .addComponent(AnalizarBtn)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 91, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(AnalizarBtn)
+                    .addComponent(jButton1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 88, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 572, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(29, 29, 29))
         );
@@ -70,6 +75,8 @@ public class editor extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(101, 101, 101)
                 .addComponent(AnalizarBtn)
+                .addGap(18, 18, 18)
+                .addComponent(jButton1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -114,6 +121,7 @@ public class editor extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AnalizarBtn;
     private javax.swing.JTextArea JTextCodigo;
+    private javax.swing.JButton jButton1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
