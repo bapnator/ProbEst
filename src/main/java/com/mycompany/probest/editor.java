@@ -8,6 +8,27 @@ package com.mycompany.probest;
  *
  * @author bapna
  */
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.filechooser.FileSystemView;
+import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 public class editor extends javax.swing.JFrame {
 
     /**
@@ -17,7 +38,8 @@ public class editor extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
     }
-
+    //public int returnValue;
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -32,7 +54,10 @@ public class editor extends javax.swing.JFrame {
         AnalizarBtn = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        menu_nuevo = new javax.swing.JMenuItem();
+        menu_abrir = new javax.swing.JMenuItem();
+        menu_guardar = new javax.swing.JMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -45,13 +70,37 @@ public class editor extends javax.swing.JFrame {
 
         jMenu1.setText("File");
 
-        jMenuItem1.setText("Abrir Archivo");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        menu_nuevo.setText("Nuevo");
+        menu_nuevo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                menu_nuevoActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem1);
+        jMenu1.add(menu_nuevo);
+
+        menu_abrir.setText("Abrir");
+        menu_abrir.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                menu_abrirMouseClicked(evt);
+            }
+        });
+        menu_abrir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menu_abrirActionPerformed(evt);
+            }
+        });
+        jMenu1.add(menu_abrir);
+
+        menu_guardar.setText("Guardar");
+        menu_guardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menu_guardarActionPerformed(evt);
+            }
+        });
+        jMenu1.add(menu_guardar);
+
+        jMenuItem4.setText("jMenuItem4");
+        jMenu1.add(jMenuItem4);
 
         jMenuBar1.add(jMenu1);
 
@@ -86,9 +135,65 @@ public class editor extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    private void menu_abrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_abrirActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+        JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+    jfc.setDialogTitle("Selecciona un archivo para abrir");
+    jfc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+    
+    int returnValue = jfc.showOpenDialog(null);
+    
+    if (returnValue == JFileChooser.APPROVE_OPTION) {
+        File f = new File(jfc.getSelectedFile().getAbsolutePath());
+        try {
+            FileReader read = new FileReader(f);
+            Scanner scan = new Scanner(read);
+            StringBuilder ingest = new StringBuilder(); // StringBuilder es más eficiente para concatenar texto
+            
+            while (scan.hasNextLine()) {
+                ingest.append(scan.nextLine()).append("\n");
+            }
+            
+            JTextCodigo.setText(ingest.toString());
+            scan.close(); 
+        } catch (FileNotFoundException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Archivo no encontrado.");
+        }
+    }
+    }//GEN-LAST:event_menu_abrirActionPerformed
+
+    private void menu_abrirMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menu_abrirMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_menu_abrirMouseClicked
+
+    private void menu_guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_guardarActionPerformed
+        // TODO add your handling code here:
+JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+    jfc.setDialogTitle("Guardar como...");
+    
+    int returnValue = jfc.showSaveDialog(null);
+    
+    if (returnValue == JFileChooser.APPROVE_OPTION) {
+        try {
+            File f = new File(jfc.getSelectedFile().getAbsolutePath());
+            FileWriter out = new FileWriter(f);
+            out.write(JTextCodigo.getText());
+            out.close();
+            JOptionPane.showMessageDialog(null, "Guardado exitosamente.");
+        } catch (FileNotFoundException ex) {
+            JOptionPane.showMessageDialog(null, "Archivo no encontrado.");
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "Error al guardar el archivo.");
+        }
+    }
+    }//GEN-LAST:event_menu_guardarActionPerformed
+
+    private void menu_nuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_nuevoActionPerformed
+        // TODO add your handling code here:
+        JTextCodigo.setText("");
+    }//GEN-LAST:event_menu_nuevoActionPerformed
+
 
     /**
      * @param args the command line arguments
@@ -131,7 +236,10 @@ public class editor extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JMenuItem menu_abrir;
+    private javax.swing.JMenuItem menu_guardar;
+    private javax.swing.JMenuItem menu_nuevo;
     // End of variables declaration//GEN-END:variables
 }
