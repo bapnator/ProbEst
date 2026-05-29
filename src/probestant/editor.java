@@ -213,7 +213,7 @@ JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDi
         PrintWriter escribir;
         try {
             escribir = new PrintWriter(archivo);
-            escribir.print(Entradatxt.getText());
+            escribir.print(JTextCodigo.getText()); 
             escribir.close();
         } catch (FileNotFoundException ex) {
             Logger.getLogger(editor.class.getName()).log(Level.SEVERE, null, ex);
@@ -227,7 +227,7 @@ JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDi
                 Tokens tokens = lexer.yylex();
                 if (tokens == null) {
                     resultado += "FIN";
-                    JTextCodigo.setText(resultado);
+                    Entradatxt.setText(resultado);
                     return;
                 }
                 switch (tokens) {
