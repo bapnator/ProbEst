@@ -21,11 +21,14 @@ import javax.swing.filechooser.FileSystemView;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.Reader;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -52,6 +55,7 @@ public class editor extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         JTextCodigo = new javax.swing.JTextArea();
         AnalizarBtn = new javax.swing.JButton();
+        Entradatxt = new javax.swing.JTextField();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         menu_nuevo = new javax.swing.JMenuItem();
@@ -67,6 +71,11 @@ public class editor extends javax.swing.JFrame {
         jScrollPane1.setViewportView(JTextCodigo);
 
         AnalizarBtn.setText("Analizar");
+        AnalizarBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AnalizarBtnActionPerformed(evt);
+            }
+        });
 
         jMenu1.setText("File");
 
@@ -114,22 +123,26 @@ public class editor extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(35, 35, 35)
+                .addContainerGap(81, Short.MAX_VALUE)
                 .addComponent(AnalizarBtn)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 91, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 572, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(45, 45, 45)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(Entradatxt)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 572, Short.MAX_VALUE))
                 .addGap(29, 29, 29))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(43, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 433, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(16, 16, 16))
             .addGroup(layout.createSequentialGroup()
-                .addGap(101, 101, 101)
-                .addComponent(AnalizarBtn)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(29, 29, 29)
+                .addComponent(Entradatxt, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(36, 36, 36)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(AnalizarBtn)
+                        .addGap(0, 362, Short.MAX_VALUE)))
+                .addContainerGap())
         );
 
         pack();
@@ -194,6 +207,47 @@ JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDi
         JTextCodigo.setText("");
     }//GEN-LAST:event_menu_nuevoActionPerformed
 
+    private void AnalizarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AnalizarBtnActionPerformed
+        // TODO add your handling code here:
+        File archivo = new File("archivo.txt");
+        PrintWriter escribir;
+        try {
+            escribir = new PrintWriter(archivo);
+            escribir.print(Entradatxt.getText());
+            escribir.close();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(editor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        try {
+            Reader lector = new BufferedReader(new FileReader("archivo.txt"));
+            Lexer lexer = new Lexer(lector);
+            String resultado = "";
+            while (true) {                
+                Tokens tokens = lexer.yylex();
+                if (tokens == null) {
+                    resultado += "FIN";
+                    JTextCodigo.setText(resultado);
+                    return;
+                }
+                switch (tokens) {
+                    case ERROR:
+                        resultado += "Simbolo no definido\n";
+                        break;
+                    case Identificador: case Numero:
+                        resultado += lexer.lexeme + ": Es un " + tokens + "\n";
+                        break;
+                    default:
+                        resultado += "Token: " + tokens + "\n";
+                }
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(editor.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(editor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_AnalizarBtnActionPerformed
+
 
     /**
      * @param args the command line arguments
@@ -233,6 +287,7 @@ JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDi
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AnalizarBtn;
+    private javax.swing.JTextField Entradatxt;
     private javax.swing.JTextArea JTextCodigo;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
