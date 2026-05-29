@@ -44,6 +44,15 @@ espacio=[ ,\t,\r]+
 /* Palabra reservada For */
 ( for ) {lexeme=yytext(); return For;}
 
+/* Palabra Media */
+( "media" ) {lexeme=yytext(); return Media;}
+
+/* Palabra Var */
+( "var" ) {lexeme=yytext(); return Var;}
+
+/* Palabra Dist */
+( "dist" ) {lexeme=yytext(); return Dist;}
+
 /* Operador Igual */
 ( "=" ) {lexeme=yytext(); return Igual;}
 

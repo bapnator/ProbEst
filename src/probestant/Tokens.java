@@ -4,6 +4,8 @@
  */
 package probestant;
 
+import javax.print.attribute.standard.Media;
+
 /**
  *
  * @author Lenovo Pro
@@ -38,5 +40,9 @@ public enum Tokens {
     P_coma,
     Identificador,
     Numero,
+    Media,
+    Var,
+    Dist,
+    custom,
     ERROR    
 }

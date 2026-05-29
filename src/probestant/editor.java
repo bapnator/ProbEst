@@ -32,6 +32,7 @@ import java.io.Reader;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import static probestant.Tokens.If;
 public class editor extends javax.swing.JFrame {
 
     /**
@@ -233,6 +234,9 @@ JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDi
                 switch (tokens) {
                     case ERROR:
                         resultado += "Simbolo no definido\n";
+                        break;
+                    case If: case For: case Media: case Dist: case Var:
+                        resultado += lexer.lexeme + "Palabra reservada" + tokens + "\n";
                         break;
                     case Identificador: case Numero:
                         resultado += lexer.lexeme + ": Es un " + tokens + "\n";
